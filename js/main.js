@@ -1,48 +1,64 @@
-console.log('%c [JavaScript]クロージャーについて学ぼう', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]スプレット構文を使いこなそう', 'color:red; font-size: 1.5em');
 
-let counter = 0;
-increment(); //1
-increment(); //2
-increment(); //3
-
-// ダメなパターン
-// counterが別の箇所で変更される恐れがある
-function increment() {
-  counter++;
-  console.log(counter);
+function sum(x, y, z) {
+  return x + y + z;
 }
+let num = sum(1, 2, 3);
+console.log(num)
 
-// 即時関数
-let increment2 = (function () {
-  let counter = 0;
-  return function () {
-    counter++;
-    console.log(counter);
-  }
-})();
-increment2();
-increment2();
-increment2();
+// スプレット構文で配列を引数に代入
+const numbers = [1, 2, 3];
+// sum.apply(null, numbers);と同義
+let num2 = sum(...numbers);
+console.log(num2);
 
-// 変数定義
-let increment3 = function countUp(i) {
-  let counter = i;
-    counter++;
-    console.log(counter);
-};
-increment3(0);
-increment3(1);
-increment3(2);
+// スプレット構文で配列を結合
+let arr1 = [0, 1, 2];
+let arr2 = [3, 4, 5];
+// concatで結合
+arr3 = arr1.concat(arr2);
+// スプレット構文で結合
+arr4 = [...arr2, ...arr1];
+// 間に数値を追加できる
+arr5 = [...arr2, 10, ...arr1];
 
-// tailにaddStringFactoryの引数が代入される
-function addStringFactory(tail) {
-// strにaddAsの引数が代入される
-  return function(str) {
-    return str + tail;
-  }
-};
-let addAs = addStringFactory('AAAAAA');
-let addBs = addStringFactory('BBBBBB');
-let str2 = 'Tom';
-str3 = addAs(str2);
-console.log(str3)
+let obj1 = { foo: 'bar', x:42 };
+let obj2 = { foo: 'baz', y:13 };
+let clonedObj = { ...obj1 };
+let mergedObj = { ...obj1, ...obj2 };
+console.log(clonedObj);
+// 結合要素のキーが同じ場合後者が優先される
+console.log(mergedObj);
+
+let a = [[1], [2], [3]];
+let b = [...a];
+// 2段階でaにも影響を及ぼす
+b.shift().shift();
+console.log(a);
+console.log(b);
+
+// Rest Parameters
+function sum(...theArgs) {
+// reduceは配列の中身を足し合わせる
+  return theArgs.reduce((previous, current) => {
+    return previous + current;
+  });
+}
+let sum2 = sum(1, 2, 3);
+console.log(sum2);
+
+// 以下の２つの関数は結果が同じ
+// 定義したa以外の残りを取得するのでRest Parameters
+function f(a) {
+  let args = Array.prototype.slice.call(arguments, f.length);
+  console.log(a);
+  console.log(args);
+}
+f(1, 2, 3)
+
+function g(a, ...args) {
+  console.log(a);
+  console.log(args);
+}
+g(1 ,2, 3)
+
