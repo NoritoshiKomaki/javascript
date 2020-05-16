@@ -1,62 +1,59 @@
-console.log('%c [JavaScript]call,apply,bindの使い方', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]アロー関数について学ぼう', 'color:red; font-size: 1.5em');
 
-// call関数で引数を渡すことでthisに代入される
-function greet(){
-  let hi = `Hi, ${this.name}`;
-  console.log(hi);
+// 通常の関数定義
+function timesTwo(i){
+  return i * 2;
 }
-let obj = {name: 'Tom'};
-greet.call(obj);
+const res = timesTwo(2);
+console.log(res);
 
-// callの第二引数以降はargumentsに格納される
-// sliceを使用することで配列で取得可能
-function greet2(){
-  let slicedArray = [].slice.call(arguments,0,1);
-  console.log(slicedArray);
+// 関数を定数で定義する
+const timesTwo2 = function(i){
+  return i * 2;
 }
-greet2.call(obj,1,2,3);
+const res2 = timesTwo2(2);
+console.log(res2)
 
-// applyは第二引数に関数を渡す
-function greet3(id1, id2, id3){
-  console.log(id1, id2, id3)
-  let hello = `Hello, ${this.name}`
-  console.log(hello);
+// アロー関数(1行の場合は{}とreturnを省略可能)
+const timesTwo3 = i => i * 2;
+const res3 = timesTwo3(2);
+console.log(res3)
+
+// 書き方(シンタックス)について
+let arrowFn;
+arrowFn = () => 42;
+arrowFn = x => 42;
+arrowFn = (x) => 42;
+arrowFn = (x, y) => 42;
+arrowFn = (x, y) => {
+  console.log(x + y);
+  return x + y;
 }
-greet3.apply(obj,[1,2,3]);
 
-// minで最小値を取得する際に使用できる
-const arry = [1,2,3,4];
-console.log(
-  Math.min.apply(null, arry)
-);
+// thisのバインドについて
+let normalFn;
+normalFn = {
+  id: 43,
+  counter: function() {
+    console.log(this.id);
 
-// setTimeoutの構造
-// window {
-//   setTimeout: function(callBack, milliSecond){
-//     stop milliSecond
-//     callBack();
-//   }
-// }
-
-// setTimeoutはwindowに格納されている
-// bindを使用することでthis = window→myObjに変更
-let myObj = {
-  id: 42,
-  print() {
-    setTimeout(function () {
-      console.log(this.id);
-    }.bind(this), 1000);
-  }
-}
-myObj.print();
-
-// アロー関数を使用するとwindowは無視される
-let myObj2 = {
-  id: 42,
-  print() {
-    setTimeout( () => {
+    window.setTimeout(() => {
       console.log(this.id);
     }, 1000);
   }
+};
+normalFn.counter();
+
+// globalが出力される
+window.me = 'global';
+const outer = function(){
+  let me = 'outer';
+  return {
+    me: 'inner',
+// functionにするとinnerが出力される
+    say: () => {
+      console.log(this.me);
+    }
+  }
 }
-myObj2.print();
+outer().say();
