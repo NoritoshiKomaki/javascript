@@ -1,64 +1,51 @@
-console.log('%c [JavaScript]スプレット構文を使いこなそう', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]分割代入を使いこなそう', 'color:red; font-size: 1.5em');
 
-function sum(x, y, z) {
-  return x + y + z;
-}
-let num = sum(1, 2, 3);
-console.log(num)
-
-// スプレット構文で配列を引数に代入
-const numbers = [1, 2, 3];
-// sum.apply(null, numbers);と同義
-let num2 = sum(...numbers);
-console.log(num2);
-
-// スプレット構文で配列を結合
-let arr1 = [0, 1, 2];
-let arr2 = [3, 4, 5];
-// concatで結合
-arr3 = arr1.concat(arr2);
-// スプレット構文で結合
-arr4 = [...arr2, ...arr1];
-// 間に数値を追加できる
-arr5 = [...arr2, 10, ...arr1];
-
-let obj1 = { foo: 'bar', x:42 };
-let obj2 = { foo: 'baz', y:13 };
-let clonedObj = { ...obj1 };
-let mergedObj = { ...obj1, ...obj2 };
-console.log(clonedObj);
-// 結合要素のキーが同じ場合後者が優先される
-console.log(mergedObj);
-
-let a = [[1], [2], [3]];
-let b = [...a];
-// 2段階でaにも影響を及ぼす
-b.shift().shift();
+let a, b, rest;
+[a, b] = [10, 20];
 console.log(a);
 console.log(b);
 
-// Rest Parameters
-function sum(...theArgs) {
-// reduceは配列の中身を足し合わせる
-  return theArgs.reduce((previous, current) => {
-    return previous + current;
-  });
-}
-let sum2 = sum(1, 2, 3);
-console.log(sum2);
+// スプレット構文で残りの要素をまとめて表示
+[a, b, ...rest] = [10, 20, 30, 40, 50];
+console.log(a);
+console.log(b);
+console.log(rest);
 
-// 以下の２つの関数は結果が同じ
-// 定義したa以外の残りを取得するのでRest Parameters
-function f(a) {
-  let args = Array.prototype.slice.call(arguments, f.length);
-  console.log(a);
-  console.log(args);
-}
-f(1, 2, 3)
+// カンマを連続することで配列のよそをスキップ
+[a, , b] = [10, 20, 30, 40, 50];
+console.log(a);
+console.log(b);
 
-function g(a, ...args) {
-  console.log(a);
-  console.log(args);
-}
-g(1 ,2, 3)
+// cに初期値を設定
+[a, ,b, c=1] = [10, 20, 30]
+console.log(a);
+console.log(b);
+console.log(c);
 
+// ハッシュはキーを引数に渡すことで順番関係なく取得できる
+const { b2, a2, ...rest2 } = { a2:10, b2:20, c2:30, d2:40 };
+console.log(a2);
+console.log(b2);
+console.log(rest2);
+
+// コロンでキー名を変更することができる
+const { b3: bb, a3: aa, ...rest3 } = { a3:10, b3:20, c3:30, d3:40 };
+console.log(aa);
+console.log(bb);
+
+// オブジェクトを()で囲むことで定義できる
+({ b, a, ...rest} = { a:10, b:20, c:30, d:40 });
+console.log(b);
+console.log(a);
+
+// 空のオブジェクトを代入することでデフォルト値となる
+function drawES2015Chart({size = 'big', coords = {x: 0, y: 0}, radius = 25} = {}) {
+  console.log(size, coords, radius);
+};
+// 初期値が表示される
+drawES2015Chart();
+// 引数で内容を書き換えることでその内容が表示される
+drawES2015Chart({
+  coords: { x: 18, y: 30},
+  radius: 30
+});
