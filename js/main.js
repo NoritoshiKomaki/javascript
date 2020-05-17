@@ -1,52 +1,60 @@
-console.log('%c [JavaScript]ループを使いこなそう', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]ループを使いこなそう2', 'color:red; font-size: 1.5em');
 
 const data = [1, 4, 2, 5, 3];
-const fruits = {banana: 'バナナ', apple: 'リンゴ', orange: 'オレンジ'};
+const fruits = { banana: 2, apple: 3, orange: 1 };
 
-Object.prototype.additionalFn = function(){};
+// 引数に取った値を繰り返し処理
+data.forEach((value, index, array) => {
+  console.log(value, index, array);
+});
 
-// for(normal) 配列
-for(let i = 0; i < data.length; i++){
-  console.log(i, data[i]);
-}
+// 繰り返し処理 + 戻り値を関数外で使用可能
+const newData = data.map((value, index, array) => {
+  return value * 2;
+});
+console.log('map');
+console.log(data);
+console.log(newData);
 
-// for(normal) オブジェクト
-let keyFruits = Object.keys(fruits);
-for(let i = 0; i < keyFruits.length; i++){
-  console.log(i, fruits[keyFruits[i]]);
-}
+// map(オブジェクトver)
+const newData2 = Object.keys(fruits).map((value, index, array) => {
+  return value + 'aaa';
+});
+console.log('map(object)');
+console.log(newData2);
 
-// for(in) 配列
-for(let i in data){
-// for(in)の場合prototypeを参照するためifで要素を絞る必要がある
-  if(data.hasOwnProperty(i)){
-    console.log(i, data[i]);
-  }
-}
+// 配列から条件式に当てはまるものだけ繰り返し処理
+const newData3 = data.filter((value, index, array) => {
+  return value !== 1;
+});
+console.log('filter');
+console.log(data);
+console.log(newData3);
 
-// for(in) オブジェクト
-for(let i in fruits){
-  if(fruits.hasOwnProperty(i)){
-    console.log(i, fruits[i]);
-  }
-}
+// accuにcurrを足し合わせていく
+const newData4 = data.reduce((accu, curr) => {
+  return accu + curr;
+});
+console.log('reduce');
+console.log(data);
+console.log(newData4);
 
-// for(of) 配列 iでvalueのみを繰り返す
-for (let i of data) {
-  console.log(i);
-}
+// 配列をソートすることができる
+// data自身もソートされるので注意が必要
+const newData5 = data.sort((a, b) => {
+  return a - b;
+// return b - a;で降順
+});
+console.log('sort');
+console.log(data);
+console.log(newData5);
 
-// for(of) オブジェクト
-for (let i of keyFruits) {
-// keyを繰り返し処理
-  console.log(i);
-// valueを繰り返し処理
-  console.log(fruits[i]);
-}
-
-// ES8から導入されたentries
-let Fruits = Object.entries(fruits);
-for (let [k, v] of Fruits) {
-  console.log(k);
-  console.log(v);
-}
+// 組み合わせも可能
+const newData6 = data
+.map(v => v + 1)
+.sort((a, b) => {
+  return a - b;
+});
+console.log('map + sort');
+console.log(data);
+console.log(newData6);
