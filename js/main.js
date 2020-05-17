@@ -1,60 +1,33 @@
-console.log('%c [JavaScript]ループを使いこなそう2', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]非同期操作について学ぼう1(コールバック関数)', 'color:red; font-size: 1.5em');
 
-const data = [1, 4, 2, 5, 3];
-const fruits = { banana: 2, apple: 3, orange: 1 };
+// サーバー取得終了を待たずして加工処理が開始されてしまう
 
-// 引数に取った値を繰り返し処理
-data.forEach((value, index, array) => {
-  console.log(value, index, array);
-});
+// サーバー取得
+// const res = getDataFromServer();
+// 取得したデータを加工
+// res.doSomething();
+// 全く関係ない他の処理
+// doSomethingElse();
 
-// 繰り返し処理 + 戻り値を関数外で使用可能
-const newData = data.map((value, index, array) => {
-  return value * 2;
-});
-console.log('map');
-console.log(data);
-console.log(newData);
+// callbackを使うことで連続して処理を実行できるが、記述が複雑になってしまう
+function wait(callback, num){
+  setTimeout(() => {
+    console.log(num);
+    callback(num);
+  }, 300);
+}
 
-// map(オブジェクトver)
-const newData2 = Object.keys(fruits).map((value, index, array) => {
-  return value + 'aaa';
-});
-console.log('map(object)');
-console.log(newData2);
+wait(() => {
+  console.log('callback function is called');
+}, 0);
 
-// 配列から条件式に当てはまるものだけ繰り返し処理
-const newData3 = data.filter((value, index, array) => {
-  return value !== 1;
-});
-console.log('filter');
-console.log(data);
-console.log(newData3);
-
-// accuにcurrを足し合わせていく
-const newData4 = data.reduce((accu, curr) => {
-  return accu + curr;
-});
-console.log('reduce');
-console.log(data);
-console.log(newData4);
-
-// 配列をソートすることができる
-// data自身もソートされるので注意が必要
-const newData5 = data.sort((a, b) => {
-  return a - b;
-// return b - a;で降順
-});
-console.log('sort');
-console.log(data);
-console.log(newData5);
-
-// 組み合わせも可能
-const newData6 = data
-.map(v => v + 1)
-.sort((a, b) => {
-  return a - b;
-});
-console.log('map + sort');
-console.log(data);
-console.log(newData6);
+// 連続処理
+wait(num => {
+  num++;
+  wait(num => {
+    num++;
+    wait(num => {
+      num++;
+    }, num);
+  }, num);
+}, 0)
