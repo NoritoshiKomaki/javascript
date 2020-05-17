@@ -1,4 +1,4 @@
-console.log('%c [JavaScript]非同期操作について学ぼう2(Promise関数)', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]非同期操作について学ぼう3(Await/Async関数)', 'color:red; font-size: 1.5em');
 
 // サーバー取得終了を待たずして加工処理が開始されてしまう
 
@@ -9,30 +9,32 @@ console.log('%c [JavaScript]非同期操作について学ぼう2(Promise関数)
 // 全く関係ない他の処理
 // doSomethingElse();
 
-// rejectはエラーハンドリングで使用
-function wait(num){
-  return new Promise((resolve, reject) => {
+// ES7 Promiseを分かりやすく記述できる
+function wait(num) {
+  return new Promise(function (resolve, reject) {
     setTimeout(() => {
       console.log(num);
-      resolve(num);
-  }, num);
+      if(num === 2){
+        reject(num);
+      }else{
+        resolve(num)
+      }
+    }, 100);
   });
 }
-wait(0).then(num => {
-  num++;
-  return wait(200);
-}).then(num => {
-  num++;
-  return wait(201);
-}).then(num => {
-  num++;
-  return wait(202);
-}).then(num => {
-  num++;
-  return wait(203);
-});
 
-// 配列の処理が終了したらthenを実行
-Promise.all([wait(1000), wait(1200), wait(1400)]).then(nums => {
-  console.log(nums);
-});
+async function init(){
+  let num = 0;
+  try {
+    num = await wait(num);
+    num++;
+    num = await wait(num);
+    num++;
+    num = await wait(num);
+    num++;
+  } catch (e) {
+    throw new Error('Error is occured', e);
+  }
+  return num;
+}
+init();
