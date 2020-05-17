@@ -1,31 +1,52 @@
-console.log('%c [JavaScript]タグ付きテンプレートリテラルを使ってみよう', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]ループを使いこなそう', 'color:red; font-size: 1.5em');
 
-let name = 'Tom';
-let str = `Hello\n${name}`;
-console.log(str);
+const data = [1, 4, 2, 5, 3];
+const fruits = {banana: 'バナナ', apple: 'リンゴ', orange: 'オレンジ'};
 
-// タグ付きテンプレートリテラル
-function b(strings, ...values) {
-  console.log(strings);
-  console.log(values);
-  return strings.reduce((accu, str, i) => {
-    let val = values[i] ? `<b>${values[i]}</b>` : "";
-    return `${accu}${str}${val}`
-  }, '');
+Object.prototype.additionalFn = function(){};
+
+// for(normal) 配列
+for(let i = 0; i < data.length; i++){
+  console.log(i, data[i]);
 }
-const str1 = "Bob";
-const str2 = "Tom";
-const result = b`${str1} and ${str2}`;
-console.log(result);
 
-// joinとreduce
-let number = [1, 2, 3, 4, 5];
-// joinは文字列として配列を結合する
-let join = number.join("");
-console.log(join);
+// for(normal) オブジェクト
+let keyFruits = Object.keys(fruits);
+for(let i = 0; i < keyFruits.length; i++){
+  console.log(i, fruits[keyFruits[i]]);
+}
 
-// reduceは繰り返し処理で文字列は結合、数値は定義した計算式で計算される
-let reduce = number.reduce((prev, current) => {
-  return prev * current;
-});
-console.log(reduce);
+// for(in) 配列
+for(let i in data){
+// for(in)の場合prototypeを参照するためifで要素を絞る必要がある
+  if(data.hasOwnProperty(i)){
+    console.log(i, data[i]);
+  }
+}
+
+// for(in) オブジェクト
+for(let i in fruits){
+  if(fruits.hasOwnProperty(i)){
+    console.log(i, fruits[i]);
+  }
+}
+
+// for(of) 配列 iでvalueのみを繰り返す
+for (let i of data) {
+  console.log(i);
+}
+
+// for(of) オブジェクト
+for (let i of keyFruits) {
+// keyを繰り返し処理
+  console.log(i);
+// valueを繰り返し処理
+  console.log(fruits[i]);
+}
+
+// ES8から導入されたentries
+let Fruits = Object.entries(fruits);
+for (let [k, v] of Fruits) {
+  console.log(k);
+  console.log(v);
+}
