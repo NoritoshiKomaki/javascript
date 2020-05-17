@@ -1,4 +1,4 @@
-console.log('%c [JavaScript]非同期操作について学ぼう1(コールバック関数)', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]非同期操作について学ぼう2(Promise関数)', 'color:red; font-size: 1.5em');
 
 // サーバー取得終了を待たずして加工処理が開始されてしまう
 
@@ -9,25 +9,30 @@ console.log('%c [JavaScript]非同期操作について学ぼう1(コールバ�
 // 全く関係ない他の処理
 // doSomethingElse();
 
-// callbackを使うことで連続して処理を実行できるが、記述が複雑になってしまう
-function wait(callback, num){
-  setTimeout(() => {
-    console.log(num);
-    callback(num);
-  }, 300);
-}
-
-wait(() => {
-  console.log('callback function is called');
-}, 0);
-
-// 連続処理
-wait(num => {
-  num++;
-  wait(num => {
-    num++;
-    wait(num => {
-      num++;
-    }, num);
+// rejectはエラーハンドリングで使用
+function wait(num){
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log(num);
+      resolve(num);
   }, num);
-}, 0)
+  });
+}
+wait(0).then(num => {
+  num++;
+  return wait(200);
+}).then(num => {
+  num++;
+  return wait(201);
+}).then(num => {
+  num++;
+  return wait(202);
+}).then(num => {
+  num++;
+  return wait(203);
+});
+
+// 配列の処理が終了したらthenを実行
+Promise.all([wait(1000), wait(1200), wait(1400)]).then(nums => {
+  console.log(nums);
+});
