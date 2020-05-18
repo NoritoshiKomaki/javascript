@@ -1,40 +1,28 @@
-console.log('%c [JavaScript]非同期操作について学ぼう3(Await/Async関数)', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]オブジェクトとJavaScript', 'color:red; font-size: 1.5em');
 
-// サーバー取得終了を待たずして加工処理が開始されてしまう
+// オブジェクトにはprototypeが格納されている
+let obj = {};
+console.log(obj);
 
-// サーバー取得
-// const res = getDataFromServer();
-// 取得したデータを加工
-// res.doSomething();
-// 全く関係ない他の処理
-// doSomethingElse();
+let arry = new Array();
+console.log(arry);
 
-// ES7 Promiseを分かりやすく記述できる
-function wait(num) {
-  return new Promise(function (resolve, reject) {
-    setTimeout(() => {
-      console.log(num);
-      if(num === 2){
-        reject(num);
-      }else{
-        resolve(num)
-      }
-    }, 100);
-  });
-}
+obj.name = 'Tom';
+console.log(obj);
 
-async function init(){
-  let num = 0;
-  try {
-    num = await wait(num);
-    num++;
-    num = await wait(num);
-    num++;
-    num = await wait(num);
-    num++;
-  } catch (e) {
-    throw new Error('Error is occured', e);
-  }
-  return num;
-}
-init();
+// オブジェクトに配列を入れることができる
+obj.arry = ['1', 1];
+console.log(obj);
+
+// オブジェクトにオブジェクトを入れることができる
+obj.obj = {name: 'John'};
+console.log(obj);
+
+// Tomが出力される
+console.log(obj.name);
+console.log(obj['name']);
+let name = 'obj';
+// johnが出力される
+console.log(obj[name]);
+// Tomが出力される
+console.log(obj.name);
