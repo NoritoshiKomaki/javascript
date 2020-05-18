@@ -1,28 +1,48 @@
-console.log('%c [JavaScript]オブジェクトとJavaScript5', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]オブジェクトとJavaScript6', 'color:red; font-size: 1.5em');
 
-function Person(first, last){
-  this.first = first;
-  this.last = last;
+class Person {
+  constructor(first, last){
+    this.first = first;
+    this.last = last;
+  }
+  introduce(){
+    console.log('Person ' + this.first + ' ' + this.last);
+  };
 }
 
-// callメソッドでPersonのthisと一致させる
-function Japanese(first, last){
-  Person.call(this, first, last);
-  this.lang = 'ja';
+class Japanese extends Person {
+  constructor(first, last) {
+    super(first, last);
+    this.lang = 'ja';
+// _を付けることでプライベート変数を明示する
+    this._age = 0;
+  }
+  introduce(){
+    console.log('こんにちは ' + this.first + ' ' + this.last);
+  };
+// newを使わず呼び出すことができる
+// thisは使用できない
+  static sayHello(value){
+    console.log('こんにちは ' + value)
+  }
+// セッター
+  set age(value) {
+    this._age = value;
+  }
+// ゲッター
+  get age() {
+    return this._age
+  }
 }
 
-// プロトタイプを継承する
-Object.setPrototypeOf(Japanese.prototype, Person.prototype)
-
-Person.prototype.introduce = function(){
-  console.log('Person ' + this.first + ' ' + this.last);
-}
-
-Japanese.prototype.sayJapanese = function(){
-  console.log('こんにちは ' + this.first + ' ' + this.last);
-}
-
-let me = new Japanese('First', 'Last');
-// 継承したことでintroduceを使用可能
+let me = new Person('Noritoshi', 'Komaki');
 me.introduce();
-me.sayJapanese();
+
+let me2 = new Japanese('小牧', '功知');
+me2.introduce();
+
+Japanese.sayHello('小牧');
+
+console.log(me2.age);
+me2.age = 10;
+console.log(me2.age);
