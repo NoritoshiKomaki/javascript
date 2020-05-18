@@ -1,25 +1,28 @@
-console.log('%c [JavaScript]オブジェクトとJavaScript4', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]オブジェクトとJavaScript5', 'color:red; font-size: 1.5em');
 
 function Person(first, last){
   this.first = first;
   this.last = last;
 }
 
-let me = new Person('First', 'Last');
-
-// 1.直代入の関数が最優先される
-me.introduce = function(){
-  console.log('My name is ' + this.first + ' ' + this.last);
+// callメソッドでPersonのthisと一致させる
+function Japanese(first, last){
+  Person.call(this, first, last);
+  this.lang = 'ja';
 }
 
-// 2.コンストラクタprototypeが二番目に優先される
+// プロトタイプを継承する
+Object.setPrototypeOf(Japanese.prototype, Person.prototype)
+
 Person.prototype.introduce = function(){
   console.log('Person ' + this.first + ' ' + this.last);
 }
 
-// 3.オブジェクトprototypeが三番目に優先される
-Object.prototype.introduce = function(){
-  console.log('Object ' + this.first + ' ' + this.last);
+Japanese.prototype.sayJapanese = function(){
+  console.log('こんにちは ' + this.first + ' ' + this.last);
 }
 
+let me = new Japanese('First', 'Last');
+// 継承したことでintroduceを使用可能
 me.introduce();
+me.sayJapanese();
