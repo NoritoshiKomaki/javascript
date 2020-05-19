@@ -1,48 +1,38 @@
-console.log('%c [JavaScript]オブジェクトとJavaScript6', 'color:red; font-size: 1.5em');
+console.log('%c [JavaScript]ES2019 Classの使い方', 'color:red; font-size: 1.5em');
 
-class Person {
-  constructor(first, last){
-    this.first = first;
-    this.last = last;
-  }
-  introduce(){
-    console.log('Person ' + this.first + ' ' + this.last);
-  };
-}
+// 変数や関数を外部で変更できてしまう
+document.addEventListener('DOMContentLoaded', () => {
+  const es = new ES2015();
+  es.printVersion();
+});
 
-class Japanese extends Person {
-  constructor(first, last) {
-    super(first, last);
-    this.lang = 'ja';
-// _を付けることでプライベート変数を明示する
-    this._age = 0;
+class ES2015 {
+  constructor() {
+    this._version = 2015;
   }
-  introduce(){
-    console.log('こんにちは ' + this.first + ' ' + this.last);
-  };
-// newを使わず呼び出すことができる
-// thisは使用できない
-  static sayHello(value){
-    console.log('こんにちは ' + value)
+  _increment() {
+    this._version++;
   }
-// セッター
-  set age(value) {
-    this._age = value;
-  }
-// ゲッター
-  get age() {
-    return this._age
+  printVersion() {
+    console.log(`%c Hi, my version is %c${this._version}`, 'font-size: 1.5em; color:red;', 'font-size: 1.5em; color:green;')
   }
 }
 
-let me = new Person('Noritoshi', 'Komaki');
-me.introduce();
 
-let me2 = new Japanese('小牧', '功知');
-me2.introduce();
+document.addEventListener('DOMContentLoaded', () => {
+  const es = new ES2019();
+  es.printVersion();
+});
 
-Japanese.sayHello('小牧');
-
-console.log(me2.age);
-me2.age = 10;
-console.log(me2.age);
+class ES2019 {
+// thisとconstructorを省略することができる
+// 頭文字に#を付けることでプライベート変数になる
+  #version = 2019;
+  increment() {
+    this.#version++;
+  }
+  printVersion() {
+    this.increment();
+    console.log(`%c Hi, my version is %c${this.#version}`, 'font-size: 1.5em; color:red;', 'font-size: 1.5em; color:green;')
+  }
+}
